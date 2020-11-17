@@ -1,4 +1,4 @@
-function [LicensePlateMask] = DetectLicensePlate(im_RGB)
+function [LicensePlateMask] = DetectLicensePlate(im_RGB, Params)
 % Detects a license plate in the image
 %
 % Two options:
@@ -13,17 +13,70 @@ h = im_HSV(:,:,1);
 s = im_HSV(:,:,2);
 v = im_HSV(:,:,3);
 
+%%%%%
+if(Params.DetectLicensePlate.is_debug)
+    figure();
+    imshow(im_HSV,[]);
+    title('im_HSV');
+    impixelinfo;
+end
+%%%%%
+
 % create a mask of pixels with yellow hue and specific saturation level only 
-yellow_mask =(((h>=0.1) & (h<=0.18)) & (s>0.35) &(v>0.5));
+yellow_mask =(((h>=Params.DetectLicensePlate.h_low_thresh) & (h<=Params.DetectLicensePlate.h_high_thresh)) ...
+                & (s>Params.DetectLicensePlate.s_low_thresh) &(v>Params.DetectLicensePlate.v_low_thresh));
+
+%%%%%
+if(Params.DetectLicensePlate.is_debug)
+    figure();
+    imshow(yellow_mask,[]);
+    title('yellow_mask');
+end
+%%%%%
 
 % filter mask by Eccentricity property
-mask = bwpropfilt(yellow_mask, 'Eccentricity', [0.8 1]);
+mask = bwpropfilt(yellow_mask, 'Eccentricity', [Params.DetectLicensePlate.eccentricity_low_thresh, Params.DetectLicensePlate.eccentricity_high_thresh]);
+
+%%%%%
+if(Params.DetectLicensePlate.is_debug)
+    figure();
+    imshow(mask,[]);
+    title('mask - after Eccentricity filter');
+end
+%%%%%
 
 % filter mask by EulerNumber property
-mask = bwpropfilt(mask, 'EulerNumber', [-50 -6]);
+mask = bwpropfilt(mask, 'EulerNumber', [Params.DetectLicensePlate.eulerNum_low_thresh, Params.DetectLicensePlate.eulerNum_high_thresh]);
+
+%%%%%
+if(Params.DetectLicensePlate.is_debug)
+    figure();
+    imshow(mask,[]);
+    title('mask - after EulerNumber filter');
+end
+%%%%%
+
+% se = strel('disk',3);
+% mask = imclose(mask,se);
+
+%%%%%
+% if(Params.DetectLicensePlate.is_debug)
+%     figure();
+%     imshow(mask,[]);
+%     title('mask - after imclose');
+% end
+%%%%%
 
 % fill holes in the mask
 filled_mask = imfill(mask,'holes');
+
+%%%%%
+if(Params.DetectLicensePlate.is_debug)
+    figure();
+    imshow(filled_mask,[]);
+    title('mask - after filling holes');
+end
+%%%%%
 
 % get information on all components in the mask
 stats = regionprops(filled_mask, 'all');
