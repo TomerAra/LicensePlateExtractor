@@ -85,6 +85,13 @@ area = [stats.Area];
 % take only the component\s with the maximal area in the mask
 white_plate = bwpropfilt(filled_mask, 'Area', [max(area)-1, max(area)+1]);
 
+% morphologically close the mask
+se_dilate = strel('disk',Params.DetectLicensePlate.dilate_se_size);
+se_close = strel('disk',Params.DetectLicensePlate.close_se_size);
+% white_plate = imclose(white_plate,se);
+white_plate = imdilate(white_plate,se_dilate);
+white_plate = imclose(white_plate,se_close);
+
 % convert mask to uint8
 LicensePlateMask = uint8(white_plate);
 
