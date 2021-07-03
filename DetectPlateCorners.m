@@ -28,7 +28,7 @@ corners = cornerPoints(points_array);
 
 % check if a plate was found
 status = false;
-if(check_valid_plate(upper_left, upper_right, lower_left, lower_right, Params))
+if(CheckValidPlate(upper_left, upper_right, lower_left, lower_right, Params))
     status = true;
 end
 

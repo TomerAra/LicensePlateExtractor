@@ -29,13 +29,15 @@ Config.LocatPlat.is_debug = true;
 
 % parameters for CreateRefPlateImage()
 Config.CreateRefPlateImage = struct();
-Config.CreateRefPlateImage.se_radius = 7;
+Config.CreateRefPlateImage.se_radius = 3;
 Config.CreateRefPlateImage.th = 0.2;
 Config.CreateRefPlateImage.is_debug = false;
+Config.CreateRefPlateImage.valid_characters = ['A' 'B' 'C' 'D' 'E' 'F' 'G' 'H' 'I' 'J' 'K' 'L' 'M' 'N' 'O' 'P' 'Q' 'R' 'S' 'T' 'U' 'V' 'W' 'X' 'Y' 'Z' '0' '1' '2' '3' '4' '5' '6' '7' '8' '9'];
+Config.CreateRefPlateImage.size_thresh = 1250;
 
-% check valid plate
-Config.width_tol = 35;
-Config.height_tol = 35;
+% parameters for CheckValidPlate
+Config.CheckValidPlate.width_tol = 35;
+Config.CheckValidPlate.height_tol = 35;
 
 end
 

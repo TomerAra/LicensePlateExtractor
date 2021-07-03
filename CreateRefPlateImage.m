@@ -24,7 +24,7 @@ height = lower_right(2) - upper_left(2);
 
 % compute H for the transformation:
 Rect = [0, 0; width, 0; 0, height; width, height];
-   
+
 % compute H matrix
 % Hto2D = computeH(points_array_2D, corners.Location);
 Hto2D = computeH(Rect, corners.Location);
@@ -49,9 +49,13 @@ ref_image_BW = histeq(ref_image_BW);
 % thresholding
 ref_image_BW = ref_image_BW < Params.CreateRefPlateImage.th;
 
-% SE = strel('disk',Params.CreateRefPlateImage.se_radius);
-% 
-% ref_image_BW = imclose(ref_image_BW, SE);
-% ref_image_BW = imdilate(ref_image_BW, SE);
+% resize image
+ref_image_BW = imresize(ref_image_BW,[200 800]);
+
+SE = strel('disk',Params.CreateRefPlateImage.se_radius);
+ 
+ref_image_BW = imclose(ref_image_BW, SE);
+ref_image_BW = imdilate(ref_image_BW, SE);
+ref_image_BW = bwareafilt(ref_image_BW, [Params.CreateRefPlateImage.size_thresh, inf]);
 
 end 
