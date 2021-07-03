@@ -43,11 +43,8 @@ ref_image = imcrop(ref_image, [0, 0, width, height]);
 % normalize
 ref_image_BW  = double(ref_image) / 255;
 
-% histogram equalization
-ref_image_BW = histeq(ref_image_BW);
-
 % thresholding
-ref_image_BW = ref_image_BW < Params.CreateRefPlateImage.th;
+ref_image_BW = ref_image_BW < %Params.CreateRefPlateImage.th;
 
 % SE = strel('disk',Params.CreateRefPlateImage.se_radius);
 % 

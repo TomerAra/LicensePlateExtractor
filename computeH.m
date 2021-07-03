@@ -4,6 +4,10 @@ function [H2to1] = computeH(p1, p2)
 %   p1 - set of 4 points (at least) from image_1
 %   p2 - set of 4 points (at least) from image_2
 
+% transpose the matrices
+p1 = p1';
+p2 = p2';
+
 s1 = size(p1);
 s2 = size(p2);
 

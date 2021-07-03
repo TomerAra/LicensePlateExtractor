@@ -29,13 +29,9 @@ Config.LocatPlat.is_debug = true;
 
 % parameters for CreateRefPlateImage()
 Config.CreateRefPlateImage = struct();
-Config.CreateRefPlateImage.se_radius = 7;
-Config.CreateRefPlateImage.th = 0.2;
-Config.CreateRefPlateImage.is_debug = false;
-
-% check valid plate
-Config.width_tol = 35;
-Config.height_tol = 35;
+Config.CreateRefPlateImage.se_radius = 4;
+Params.CreateRefPlateImage.th = 0.7
+Config.CreateRefPlateImage.is_debug = false;;
 
 end
 

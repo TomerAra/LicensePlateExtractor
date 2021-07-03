@@ -9,10 +9,12 @@ for k = 3:length(sample_images)
     im_path = [sample_images(k).folder,'\',sample_images(k).name];
     im = imread(im_path);
     
+    % create a mask in one channel
     plate_mask_BW = DetectLicensePlate(im, Params);
 
     corners = DetectPlateCorners(plate_mask_BW, Params);
     
+    % duplicate the mask to fit to three channels (fit to RGB image)
     plate_mask_RGB = repmat(plate_mask_BW,[1 1 3]);
     result = im.*plate_mask_RGB;
 
