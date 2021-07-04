@@ -7,12 +7,11 @@ Params = default_params();
 
 results = {};
 
-print_eb = true;
+print_en = true;
 
 for k = 3:length(sample_images)
     im_path = [sample_images(k).folder,'\',sample_images(k).name];
     im = imread(im_path);
-    gray_im = rgb2gray(im);
     
     fprintf('\nProcessing image: %s...\n', im_path);
     
@@ -25,7 +24,7 @@ for k = 3:length(sample_images)
     if(status)
         ref_image = CreateRefPlateImage(im,corners, plate_mask_RGB, Params);
 
-        if(print_eb)
+        if(print_en)
             fig = figure();
             subplot(1,2,1);
             imshow(im,[]);
@@ -37,20 +36,10 @@ for k = 3:length(sample_images)
             title('Ref 2D Image');
             impixelinfo;
             truesize(fig);
-        end
-        
-        ocrResults = ocr(ref_image, 'CharacterSet', Params.CreateRefPlateImage.valid_characters);
-        tmp_res = ['Image ' sample_images(k).name ' plate number is: ' ocrResults.Text];
-        
+        end      
     else
         fprintf('Could not find a plate in %s.\n', im_path);
         tmp_res = ['Could not find a plate in image ' sample_images(k).name];
     end
-    
-    results{k-2} = tmp_res;
-end
-
-for i = 1:(length(sample_images)-3)
-    results{i}
 end
 
